@@ -1,0 +1,12 @@
+CREATE TABLE unnormalizedform(
+    CRN INT,
+    ISBN VARCHAR(13),
+    Title VARCHAR(255),
+    Authors VARCHAR(255),
+    Edition VARCHAR(50),
+    Publisher VARCHAR(255),
+    Publisher_Address VARCHAR(255),
+    Pages INT,
+    Year INT,
+    Course_Name VARCHAR(255)
+); 
