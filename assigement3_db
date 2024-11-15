@@ -9,4 +9,25 @@ CREATE TABLE unnormalizedform(
     Pages INT,
     Year INT,
     Course_Name VARCHAR(255)
-); 
+);
+\COPY unnormalizedform FROM 'C:\Users\User\database.csv' DELIMITER ',' CSV HEADER;
+select * from public.unnormalizedform
+
+CREATE TABLE FistNfTable (
+    CRN INT,
+    ISBN VARCHAR(13),
+    Title VARCHAR(255),
+    Author VARCHAR(255),
+    Edition VARCHAR(50),
+    Publisher VARCHAR(255),
+    Publisher_address text,
+    Pages INT,
+    Year INT,
+    Course_Name VARCHAR(255)
+);
+
+INSERT INTO FistNfTable (CRN, ISBN, Title, Author, Edition, Publisher,Publisher_address, Pages, Year, Course_Name)
+SELECT CRN, ISBN, Title, unnest(string_to_array(Authors, ',')), Edition, Publisher,Publisher_address, Pages, Year, Course_Name
+FROM unnormalizedform
+select * from public.fistnftable
+
