@@ -31,3 +31,20 @@ SELECT CRN, ISBN, Title, unnest(string_to_array(Authors, ',')), Edition, Publish
 FROM unnormalizedform
 select * from public.fistnftable
 
+
+CREATE TABLE SecondNfTable(
+    CRN INT,
+    Course_Name VARCHAR(255),
+    PRIMARY KEY (CRN)
+);
+
+INSERT INTO SecondNfTable(CRN, Course_Name) SELECT DISTINCT CRN, Course_Name FROM unnormalizedform
+
+
+
+
+
+
+
+
+
