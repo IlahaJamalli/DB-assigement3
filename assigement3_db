@@ -66,6 +66,28 @@ ALTER TABLE SecondNfAuthors ADD Author_ID SERIAL PRIMARY KEY;
 SELECT * FROM public.secondnfauthors
 
 
+CREATE TABLE SecondNf_Book_Authors AS
+SELECT DISTINCT 
+    FistNfTable.ISBN,
+    SecondNfAuthors.Author_ID
+FROM FistNfTable
+JOIN SecondNfAuthors ON FistNfTable.author = SecondNfAuthors.author_name;
+
+SELECT * FROM public.secondnf_book_authors
+
+CREATE TABLE SecondNf_Course_Books AS
+SELECT DISTINCT 
+    FistNfTable.ISBN,
+    SecondNfCourses.CRN
+FROM FistNfTable
+JOIN SecondNfCourses ON FistNfTable.course_name = SecondNfCourses.course_name;
+
+SELECT * FROM public.secondnf_course_books
+
+
+
+
+
 
 
 
