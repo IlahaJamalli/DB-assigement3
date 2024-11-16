@@ -1,4 +1,3 @@
-drop table if exists SecondNfTable
 CREATE TABLE unnormalizedform(
     CRN INT,
     ISBN VARCHAR(13),
@@ -30,6 +29,7 @@ CREATE TABLE FistNfTable (
 INSERT INTO FistNfTable (CRN, ISBN, Title, Author, Edition, Publisher,Publisher_address, Pages, Year, Course_Name)
 SELECT CRN, ISBN, Title, unnest(string_to_array(Authors, ',')), Edition, Publisher,Publisher_address, Pages, Year, Course_Name
 FROM unnormalizedform
+
 select * from public.fistnftable
 
 
@@ -40,3 +40,33 @@ CREATE TABLE SecondNfCourses(
 );
 
 INSERT INTO SecondNfCourses(CRN, Course_Name) SELECT DISTINCT CRN, Course_Name FROM unnormalizedform
+select * from public.secondnfcourses
+
+CREATE TABLE SecondNfBooks(
+    ISBN VARCHAR(13),
+    Title VARCHAR(255),
+    Edition VARCHAR(50),
+    Publisher VARCHAR(255),
+    Publisher_address TEXT,
+    Pages INT,
+    Year INT,
+    PRIMARY KEY (ISBN)
+);
+
+INSERT INTO SecondNfBooks(ISBN, Title, Edition, Publisher, Publisher_address, Pages, Year)
+SELECT DISTINCT ISBN, Title, Edition, Publisher, Publisher_address, Pages, Year FROM FistNfTable;
+
+SELECT * FROM public.secondnfbooks
+
+CREATE TABLE SecondNfAuthors AS 
+SELECT DISTINCT Author AS Author_Name FROM FistNfTable;
+
+ALTER TABLE SecondNfAuthors ADD Author_ID SERIAL PRIMARY KEY;
+
+SELECT * FROM public.secondnfauthors
+
+
+
+
+
+
