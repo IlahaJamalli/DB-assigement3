@@ -1,3 +1,4 @@
+drop table if exists SecondNfTable
 CREATE TABLE unnormalizedform(
     CRN INT,
     ISBN VARCHAR(13),
@@ -32,19 +33,10 @@ FROM unnormalizedform
 select * from public.fistnftable
 
 
-CREATE TABLE SecondNfTable(
+CREATE TABLE SecondNfCourses(
     CRN INT,
     Course_Name VARCHAR(255),
     PRIMARY KEY (CRN)
 );
 
-INSERT INTO SecondNfTable(CRN, Course_Name) SELECT DISTINCT CRN, Course_Name FROM unnormalizedform
-
-
-
-
-
-
-
-
-
+INSERT INTO SecondNfCourses(CRN, Course_Name) SELECT DISTINCT CRN, Course_Name FROM unnormalizedform
