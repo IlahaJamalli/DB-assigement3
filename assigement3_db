@@ -1,3 +1,17 @@
+DROP TABLE IF EXISTS public.firstnf_table
+DROP TABLE IF EXISTS public.secondnf_book_authors
+DROP TABLE IF EXISTS public.secondnf_course_books
+DROP TABLE IF EXISTS public.secondnf_authors
+DROP TABLE IF EXISTS public.secondnf_books
+DROP TABLE IF EXISTS public.secondnf_courses
+DROP TABLE IF EXISTS public.thirdnf_books
+DROP TABLE IF EXISTS public.thirdnf_books_publisher
+DROP TABLE IF EXISTS public.thirdnf_publisher
+DROP TABLE IF EXISTS public.unnormalizedform
+
+CREATE DATABASE assigment3;
+
+
 CREATE TABLE unnormalizedform(
     CRN INT,
     ISBN VARCHAR(13),
@@ -10,10 +24,13 @@ CREATE TABLE unnormalizedform(
     Year INT,
     Course_Name VARCHAR(255)
 );
-\COPY unnormalizedform FROM 'C:\Users\User\database.csv' DELIMITER ',' CSV HEADER;
-select * from public.unnormalizedform
 
-CREATE TABLE FistNfTable (
+
+COPY unnormalizedform FROM 'C:\Users\User\db.csv' DELIMITER ',' CSV HEADER;
+
+--SELECT * FROM public.unnormalizedform
+
+CREATE TABLE FirstNf_Table (
     CRN INT,
     ISBN VARCHAR(13),
     Title VARCHAR(255),
@@ -26,23 +43,24 @@ CREATE TABLE FistNfTable (
     Course_Name VARCHAR(255)
 );
 
-INSERT INTO FistNfTable (CRN, ISBN, Title, Author, Edition, Publisher,Publisher_address, Pages, Year, Course_Name)
+INSERT INTO FirstNf_Table (CRN, ISBN, Title, Author, Edition, Publisher,Publisher_address, Pages, Year, Course_Name)
 SELECT CRN, ISBN, Title, unnest(string_to_array(Authors, ',')), Edition, Publisher,Publisher_address, Pages, Year, Course_Name
 FROM unnormalizedform
 
-select * from public.fistnftable
+--SELECT * FROM public.FirstNf_Table
 
 
-CREATE TABLE SecondNfCourses(
+CREATE TABLE SecondNf_Courses(
     CRN INT,
     Course_Name VARCHAR(255),
     PRIMARY KEY (CRN)
 );
 
-INSERT INTO SecondNfCourses(CRN, Course_Name) SELECT DISTINCT CRN, Course_Name FROM unnormalizedform
-select * from public.secondnfcourses
+INSERT INTO SecondNf_Courses(CRN, Course_Name) SELECT DISTINCT CRN, Course_Name FROM unnormalizedform
 
-CREATE TABLE SecondNfBooks(
+--SELECT * FROM public.secondnf_courses
+
+CREATE TABLE SecondNf_Books(
     ISBN VARCHAR(13),
     Title VARCHAR(255),
     Edition VARCHAR(50),
@@ -53,42 +71,45 @@ CREATE TABLE SecondNfBooks(
     PRIMARY KEY (ISBN)
 );
 
-INSERT INTO SecondNfBooks(ISBN, Title, Edition, Publisher, Publisher_address, Pages, Year)
-SELECT DISTINCT ISBN, Title, Edition, Publisher, Publisher_address, Pages, Year FROM FistNfTable;
+INSERT INTO SecondNf_Books(ISBN, Title, Edition, Publisher, Publisher_address, Pages, Year)
+SELECT DISTINCT ISBN, Title, Edition, Publisher, Publisher_address, Pages, Year FROM FirstNf_Table;
 
-SELECT * FROM public.secondnfbooks
+--SELECT * FROM public.secondnf_books
 
-CREATE TABLE SecondNfAuthors AS 
-SELECT DISTINCT Author AS Author_Name FROM FistNfTable;
 
-ALTER TABLE SecondNfAuthors ADD Author_ID SERIAL PRIMARY KEY;
+CREATE TABLE SecondNf_Authors AS 
+SELECT DISTINCT Author AS Author_Name FROM FirstNf_Table;
 
-SELECT * FROM public.secondnfauthors
+ALTER TABLE SecondNf_Authors ADD Author_ID SERIAL PRIMARY KEY;
 
+--SELECT * FROM public.secondnf_authors
 
 CREATE TABLE SecondNf_Book_Authors AS
 SELECT DISTINCT 
-    FistNfTable.ISBN,
-    SecondNfAuthors.Author_ID
-FROM FistNfTable
-JOIN SecondNfAuthors ON FistNfTable.author = SecondNfAuthors.author_name;
+    FirstNf_Table.ISBN,
+    SecondNf_Authors.Author_ID
+FROM FirstNf_Table
+JOIN SecondNf_Authors ON FirstNf_Table.author = SecondNf_Authors.author_name;
 
-SELECT * FROM public.secondnf_book_authors
+--SELECT * FROM public.secondnf_book_authors
 
 CREATE TABLE SecondNf_Course_Books AS
 SELECT DISTINCT 
-    FistNfTable.ISBN,
-    SecondNfCourses.CRN
-FROM FistNfTable
-JOIN SecondNfCourses ON FistNfTable.course_name = SecondNfCourses.course_name;
+    FirstNf_Table.ISBN,
+    SecondNf_Courses.CRN
+FROM FirstNf_Table JOIN SecondNf_Courses ON FirstNf_Table.course_name = SecondNf_Courses.course_name;
 
-SELECT * FROM public.secondnf_course_books
+--SELECT * FROM public.secondnf_course_books
 
+CREATE TABLE ThirdNf_Publisher AS 
+SELECT DISTINCT 
+Publisher AS Publisher_name, Publisher_address FROM SecondNf_Books
 
+ALTER TABLE ThirdNf_Publisher ADD Publisher_id SERIAL PRIMARY KEY;
 
+--SELECT * FROM public.thirdnf_publisher
 
+CREATE TABLE ThirdNf_Books AS 
+SELECT ISBN, title, edition, pages, year FROM SecondNf_Books;
 
-
-
-
-
+--SELECT * FROM public.thirdnf_books
