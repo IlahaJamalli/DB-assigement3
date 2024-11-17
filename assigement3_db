@@ -113,3 +113,21 @@ CREATE TABLE ThirdNf_Books AS
 SELECT ISBN, title, edition, pages, year FROM SecondNf_Books;
 
 --SELECT * FROM public.thirdnf_books
+
+CREATE TABLE ThirdNF_Books_Publisher AS 
+SELECT DISTINCT 
+    SecondNf_Books.ISBN,
+    ThirdNf_Publisher.publisher_id
+FROM SecondNf_Books
+JOIN ThirdNf_Publisher ON SecondNf_Books.publisher = ThirdNf_Publisher.publisher_name;
+
+--SELECT * FROM public.thirdnf_books_publisher
+
+
+
+
+
+
+
+
+
