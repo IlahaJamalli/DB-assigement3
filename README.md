@@ -22,7 +22,7 @@ This project demonstrates the normalization process for a sample database. The d
      - ThirdNf_Books
      - ThirdNf_Books_Publisher
 
-- Creating Join Tables
+- Creating Join Tables-
   Show relationship between tables
    
    SELECT DISTINCT FirstNf_Table.ISBN, SecondNf_Authors.Author_ID
