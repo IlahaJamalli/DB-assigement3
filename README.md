@@ -27,6 +27,6 @@ This project demonstrates the normalization process for a sample database. The d
    
 ## Output
 The project results in a normalized database with the following:
-1. Properly structured tables adhering to database normalization rules.
+1. Well-structured tables designed according to database normalization principles.
 2. Minimal redundancy and improved data integrity.
 3. Join tables to handle many-to-many relationships effectively.
