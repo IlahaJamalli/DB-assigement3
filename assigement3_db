@@ -57,8 +57,7 @@ CREATE TABLE SecondNf_Courses(
 );
 
 INSERT INTO SecondNf_Courses(CRN, Course_Name) SELECT DISTINCT CRN, Course_Name FROM unnormalizedform
-
---SELECT * FROM public.secondnf_courses
+SELECT * FROM public.secondnf_courses
 
 CREATE TABLE SecondNf_Books(
     ISBN VARCHAR(13),
@@ -74,7 +73,7 @@ CREATE TABLE SecondNf_Books(
 INSERT INTO SecondNf_Books(ISBN, Title, Edition, Publisher, Publisher_address, Pages, Year)
 SELECT DISTINCT ISBN, Title, Edition, Publisher, Publisher_address, Pages, Year FROM FirstNf_Table;
 
---SELECT * FROM public.secondnf_books
+SELECT * FROM public.secondnf_books
 
 
 CREATE TABLE SecondNf_Authors AS 
@@ -82,7 +81,7 @@ SELECT DISTINCT Author AS Author_Name FROM FirstNf_Table;
 
 ALTER TABLE SecondNf_Authors ADD Author_ID SERIAL PRIMARY KEY;
 
---SELECT * FROM public.secondnf_authors
+SELECT * FROM public.secondnf_authors
 
 CREATE TABLE SecondNf_Book_Authors AS
 SELECT DISTINCT 
@@ -91,7 +90,7 @@ SELECT DISTINCT
 FROM FirstNf_Table
 JOIN SecondNf_Authors ON FirstNf_Table.author = SecondNf_Authors.author_name;
 
---SELECT * FROM public.secondnf_book_authors
+SELECT * FROM public.secondnf_book_authors
 
 CREATE TABLE SecondNf_Course_Books AS
 SELECT DISTINCT 
@@ -99,7 +98,7 @@ SELECT DISTINCT
     SecondNf_Courses.CRN
 FROM FirstNf_Table JOIN SecondNf_Courses ON FirstNf_Table.course_name = SecondNf_Courses.course_name;
 
---SELECT * FROM public.secondnf_course_books
+SELECT * FROM public.secondnf_course_books
 
 CREATE TABLE ThirdNf_Publisher AS 
 SELECT DISTINCT 
@@ -107,12 +106,12 @@ Publisher AS Publisher_name, Publisher_address FROM SecondNf_Books
 
 ALTER TABLE ThirdNf_Publisher ADD Publisher_id SERIAL PRIMARY KEY;
 
---SELECT * FROM public.thirdnf_publisher
+SELECT * FROM public.thirdnf_publisher
 
 CREATE TABLE ThirdNf_Books AS 
 SELECT ISBN, title, edition, pages, year FROM SecondNf_Books;
 
---SELECT * FROM public.thirdnf_books
+SELECT * FROM public.thirdnf_books
 
 CREATE TABLE ThirdNF_Books_Publisher AS 
 SELECT DISTINCT 
@@ -121,7 +120,7 @@ SELECT DISTINCT
 FROM SecondNf_Books
 JOIN ThirdNf_Publisher ON SecondNf_Books.publisher = ThirdNf_Publisher.publisher_name;
 
---SELECT * FROM public.thirdnf_books_publisher
+SELECT * FROM public.thirdnf_books_publisher
 
 
 
