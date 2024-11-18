@@ -25,11 +25,6 @@ This project demonstrates the normalization process for a sample database. The d
 - Creating Join Tables-
   Show relationship between tables
    
-   SELECT DISTINCT FirstNf_Table.ISBN, SecondNf_Authors.Author_ID
-   FROM FirstNf_Table
-   JOIN SecondNf_Authors ON FirstNf_Table.author = SecondNf_Authors.author_name;
-   
-
 ## Output
 The project results in a normalized database with the following:
 1. Properly structured tables adhering to database normalization rules.
